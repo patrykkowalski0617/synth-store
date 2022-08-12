@@ -1,5 +1,5 @@
-import React from "react";
-import productsData from "../../data/productsData";
+import React from 'react';
+import productsData from '../../data/productsData';
 
 const ProductsList = () => {
   return (
