@@ -33,16 +33,40 @@ export const ProductCardInnerContainer = styled.div`
 `;
 
 export const ProductName = styled.p`
-  height: 35px;
+  height: 50px;
   margin: 20px 0;
+  font-size: ${({ theme }) => theme.fontSize.l};
   span {
     font-weight: bold;
   }
 `;
 
-export const ProductPrice = styled.p`
+export const ProductCardFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+export const CartButton = styled.button`
+  border: 1px solid ${({ theme }) => theme.colors.grey};
+  border-radius: 5px;
+  padding: 5px 20px;
+  width: 100%;
   font-size: ${({ theme }) => theme.fontSize.l};
-  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    margin-right: 20px;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.lightGrey};
+  }
+`;
+
+export const ProductPrice = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.xl};
   &::before {
     content: '$';
   }

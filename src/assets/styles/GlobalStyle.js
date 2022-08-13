@@ -22,4 +22,17 @@ export const GlobalStyle = createGlobalStyle`
   button {
     font-family: 'Montserrat', sans-serif;
   }
+
+  button{
+    border: none;
+    background-color: unset;
+    cursor: pointer;
+  }
+
+  a,
+  a:hover,
+  a:focus,
+  a:visited{
+    color: inherit;
+  }
 `;

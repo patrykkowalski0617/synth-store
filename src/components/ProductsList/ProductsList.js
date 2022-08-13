@@ -6,7 +6,10 @@ import {
   ProductName,
   ProductPrice,
   ProductCardInnerContainer,
+  ProductCardFooter,
+  CartButton,
 } from './PruductsList.styles';
+import { FaShoppingCart } from 'react-icons/fa';
 
 const ProductsList = () => {
   return (
@@ -22,6 +25,11 @@ const ProductsList = () => {
               <span>{brand}</span> - {name}
             </ProductName>
             <ProductPrice>{price}</ProductPrice>
+            <ProductCardFooter>
+              <CartButton>
+                <FaShoppingCart /> Cart
+              </CartButton>
+            </ProductCardFooter>
           </ProductCardInnerContainer>
         </ProductCard>
       ))}
