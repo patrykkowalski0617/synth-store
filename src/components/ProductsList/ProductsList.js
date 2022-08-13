@@ -8,7 +8,7 @@ const ProductsList = () => {
         <div>
           <img src={require(`../../assets/img/${imgName}`)} />
           <p>
-            {brand} - {name}
+            <span>{brand}</span> - <span>{name}</span>
           </p>
           <p>{price}</p>
         </div>

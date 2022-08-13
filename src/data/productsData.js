@@ -1,11 +1,5 @@
 const productsData = [
   {
-    imgName: 'TeenageEngineering_OP-1-Field_01.jpg',
-    price: 1999.0,
-    name: 'OP-1 Field Synthesizer + Workstation',
-    brand: 'Teenage Engineering',
-  },
-  {
     imgName: 'Buchla_Easel-Command_01.jpg',
     price: 2999.0,
     name: 'Easel Command Standalone Analog Synthesizer',
@@ -148,12 +142,6 @@ const productsData = [
     price: 2099.0,
     name: 'Sound Studio - Mother-32 + DFAM + Subharmonicon',
     brand: 'Moog',
-  },
-  {
-    imgName: 'teenageengineering_op-z_01_1.jpg',
-    price: 599.0,
-    name: 'OP-Z Synthesizer Workstation',
-    brand: 'Teenage Engineering',
   },
   {
     imgName: 'novation_peak_01.jpg',

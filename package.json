@@ -12,6 +12,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint-config-prettier": "7.2.0",
     "eslint-plugin-prettier": "3.4.1",
     "prettier": "2.7.1"
