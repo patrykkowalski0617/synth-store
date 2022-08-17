@@ -1,21 +1,26 @@
-export const theme = {
-  breakpoints: {
-    s: '700px',
-    m: '1100px',
-    l: '1600px',
+import { createTheme } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
+import './fonts.css';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Montserrat', sans-serif",
   },
-  colors: {
-    white: '#FFF',
-    lightGrey: '#F7F8FA',
-    grey: '#C0C7D6',
-    darkGrey: '#737C8E',
-    black: '#222',
+  palette: {
+    primary: {
+      light: '#ff0000',
+      main: '#ff0000',
+      dark: '#ff0000',
+      contrastText: '#ff0000',
+    },
+    secondary: {
+      light: '#ff0000',
+      main: '#ff0000',
+      dark: '#ff0000',
+      contrastText: '#ff0000',
+    },
+    grey: grey[500],
   },
-  fontSize: {
-    xxl: '3rem',
-    xl: '2rem',
-    l: '1.3rem',
-    m: '1rem',
-    s: '0.8rem',
-  },
-};
+});
+
+export default theme;

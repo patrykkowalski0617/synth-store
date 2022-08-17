@@ -1,38 +1,38 @@
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 
-export const ProductsListWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-`;
+export const ProductPrice = styled('p')(() => ({
+  '&::before': {
+    content: "'$'",
+  },
+}));
 
-export const ProductCard = styled.div`
-  padding: 10px;
-  width: 100%;
-  max-width: 320px;
-  @media (min-width: ${({ theme }) => theme.breakpoints.s}) {
-    max-width: 50%;
-  }
-  @media (min-width: ${({ theme }) => theme.breakpoints.m}) {
-    max-width: 33%;
-  }
-  img {
-    display: block;
-    max-width: 300px;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-  }
-`;
+export const ProductsListWrapper = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+}));
 
-export const ProductCardInnerContainer = styled.div`
-  border: 1px solid ${({ theme }) => theme.colors.grey};
-  padding: 10px 20px;
-  height: 450px;
-`;
+export const ProductCardWrapper = styled('div')(() => ({
+  padding: '10px',
+  width: '100%',
+  maxWidth: '320px',
+  img: {
+    display: 'block',
+    maxWidth: '300px',
+    width: '100%',
+    height: 'auto',
+    margin: '0 auto',
+  },
+}));
 
-export const ProductName = styled.p`
+export const ProductCard = styled('div')(({ theme }) => ({
+  border: `1px solid ${theme.palette.grey}`,
+  padding: '10px 20px',
+  height: '450px',
+}));
+
+export const ProductName = `
   height: 50px;
   margin: 20px 0;
   font-size: ${({ theme }) => theme.fontSize.l};
@@ -41,33 +41,16 @@ export const ProductName = styled.p`
   }
 `;
 
-export const ProductCardFooter = styled.div`
+export const ProductCardFooter = `
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
 `;
 
-export const CartButton = styled.button`
-  border: 1px solid ${({ theme }) => theme.colors.grey};
-  border-radius: 5px;
-  padding: 5px 20px;
-  width: 100%;
-  font-size: ${({ theme }) => theme.fontSize.l};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  svg {
-    margin-right: 20px;
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.lightGrey};
-  }
-`;
-
-export const ProductPrice = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.xl};
-  &::before {
-    content: '$';
-  }
-`;
+// export const ProductPrice = `
+//   font-size: ${({ theme }) => theme.fontSize.xl};
+//   &::before {
+//     content: '$';
+//   }
+// `;
