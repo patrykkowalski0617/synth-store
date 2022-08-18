@@ -24,7 +24,7 @@ const ProductsList = () => {
             </p>
             <ProductPrice>{price}</ProductPrice>
             <div>
-              <Button variant="outlined">
+              <Button variant="contained">
                 <ShoppingCartIcon />
                 Cart
               </Button>

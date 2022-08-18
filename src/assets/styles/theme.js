@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
+import { grey, cyan, lightGreen } from '@mui/material/colors';
 import './fonts.css';
 
 const theme = createTheme({
@@ -8,19 +8,19 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      light: '#ff0000',
-      main: '#ff0000',
-      dark: '#ff0000',
-      contrastText: '#ff0000',
+      light: cyan[100],
+      main: cyan[700],
+      dark: cyan[900],
+      contrastText: cyan[50],
     },
     secondary: {
-      light: '#ff0000',
-      main: '#ff0000',
-      dark: '#ff0000',
-      contrastText: '#ff0000',
+      light: lightGreen[100],
+      main: lightGreen[500],
+      dark: lightGreen[900],
+      contrastText: lightGreen[50],
     },
-    grey: grey[500],
   },
+  customPalette: { grey: grey[500] },
 });
 
 export default theme;

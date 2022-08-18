@@ -27,7 +27,7 @@ export const ProductCardWrapper = styled('div')(() => ({
 }));
 
 export const ProductCard = styled('div')(({ theme }) => ({
-  border: `1px solid ${theme.palette.grey}`,
+  border: `1px solid ${theme.customPalette.grey}`,
   padding: '10px 20px',
   height: '450px',
 }));
