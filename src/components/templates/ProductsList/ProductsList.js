@@ -1,5 +1,5 @@
 import React from 'react';
-import productsData from '../../data/productsData';
+import productsData from '../../../data/productsData';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Button from '@mui/material/Button';
 import {
@@ -16,7 +16,7 @@ const ProductsList = () => {
         <ProductCardWrapper key={index}>
           <ProductCard>
             <img
-              src={require(`../../assets/img/${imgName}`)}
+              src={require(`../../../assets/img/${imgName}`)}
               alt={`${brand} - ${name}`}
             />
             <p>
