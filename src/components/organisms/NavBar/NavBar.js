@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { IconButton, AppBar, Toolbar, Box, Button } from '@mui/material';
+import { IconButton, AppBar, Toolbar, Box } from '@mui/material';
 import { Menu, Close } from '@mui/icons-material';
 import { NavWrapper } from './NavBar.styles';
-import { NavLink } from 'react-router-dom';
+import NavButton from '../../atoms/NavButton/NavButton';
 
 const pages = [
   { btnTxt: 'Desktop synths', link: 'desktop_synths' },
@@ -20,12 +20,8 @@ const NavBar = () => {
     <AppBar>
       <NavWrapper isOpen={isOpen} onClick={handleOpenNav}>
         <Box>
-          {pages.map(({ btnTxt, link }) => (
-            <NavLink to={link} key={link}>
-              <Button sx={{ my: 2, color: 'black', display: 'block' }}>
-                {btnTxt}
-              </Button>
-            </NavLink>
+          {pages.map(({ btnTxt, link }, i) => (
+            <NavButton btnTxt={btnTxt} link={link} key={`${link}[${i}]`} />
           ))}
         </Box>
       </NavWrapper>

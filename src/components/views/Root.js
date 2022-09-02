@@ -1,4 +1,4 @@
-import ProductsList from '../templates/ProductsList/ProductsList';
+import ProductsList from '../organisms/ProductsList/ProductsList';
 import NavBar from '../organisms/NavBar/NavBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../../assets/styles/theme';
@@ -17,7 +17,6 @@ function Root() {
         {inputGlobalStyles}
         <GlobalStyles styles={globalStyles} />
         <NavBar />
-
         <ProductsList />
       </ThemeProvider>
     </Router>

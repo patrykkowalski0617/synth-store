@@ -4,13 +4,7 @@ export const ProductPrice = styled('p')(() => ({
   '&::before': {
     content: "'$'",
   },
-}));
-
-export const ProductsListWrapper = styled('div')(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexWrap: 'wrap',
+  margin: '10px 0 20px 0',
 }));
 
 export const ProductCardWrapper = styled('div')(() => ({
@@ -32,14 +26,13 @@ export const ProductCard = styled('div')(({ theme }) => ({
   height: '450px',
 }));
 
-export const ProductName = `
-  height: 50px;
-  margin: 20px 0;
-  font-size: ${({ theme }) => theme.fontSize.l};
-  span {
-    font-weight: bold;
-  }
-`;
+export const ProductName = styled('div')(({ theme }) => ({
+  height: 70,
+  margin: '10px 0 0 0',
+  span: {
+    fontWeight: '700',
+  },
+}));
 
 export const ProductCardFooter = `
   display: flex;
@@ -47,10 +40,3 @@ export const ProductCardFooter = `
   align-items: center;
   margin-top: 20px;
 `;
-
-// export const ProductPrice = `
-//   font-size: ${({ theme }) => theme.fontSize.xl};
-//   &::before {
-//     content: '$';
-//   }
-// `;

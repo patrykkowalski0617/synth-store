@@ -3,7 +3,7 @@ import { blueGrey } from '@mui/material/colors';
 
 export const NavWrapper = styled('div')(({ isOpen, theme }) => ({
   position: 'fixed',
-  top: 56,
+  top: 0,
   right: `${isOpen ? '0' : '-100%'}`,
   width: '100%',
   bottom: 0,
@@ -19,9 +19,6 @@ export const NavWrapper = styled('div')(({ isOpen, theme }) => ({
     transition: '.3s left',
     paddingTop: 56,
   },
-  '& .active button': {
-    fontWeight: 'bold',
-  },
   [theme.breakpoints.up('sm')]: {
     position: 'static',
     backgroundColor: `transparent`,
@@ -31,11 +28,6 @@ export const NavWrapper = styled('div')(({ isOpen, theme }) => ({
       display: 'flex',
       backgroundColor: `transparent`,
       paddingTop: 0,
-    },
-    '& .active button': {
-      borderBottom: `2px solid ${theme.palette.secondary.main}`,
-      borderTop: `2px solid ${theme.palette.secondary.main}`,
-      fontWeight: 'normal',
     },
   },
 }));
