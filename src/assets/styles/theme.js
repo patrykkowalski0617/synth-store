@@ -5,6 +5,7 @@ import './fonts.css';
 const theme = createTheme({
   typography: {
     fontFamily: "'Montserrat', sans-serif",
+    fontWeight: '400',
   },
   palette: {
     primary: {

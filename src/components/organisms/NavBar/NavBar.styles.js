@@ -17,8 +17,25 @@ export const NavWrapper = styled('div')(({ isOpen, theme }) => ({
     left: `${isOpen ? '0' : '-100%'}`,
     backgroundColor: `${theme.palette.secondary.main}`,
     transition: '.3s left',
-    paddingTop: '56px',
+    paddingTop: 56,
+  },
+  '& .active button': {
+    fontWeight: 'bold',
+  },
+  [theme.breakpoints.up('sm')]: {
+    position: 'static',
+    backgroundColor: `transparent`,
+    '& .MuiBox-root': {
+      width: '100%',
+      position: 'static',
+      display: 'flex',
+      backgroundColor: `transparent`,
+      paddingTop: 0,
+    },
+    '& .active button': {
+      borderBottom: `2px solid ${theme.palette.secondary.main}`,
+      borderTop: `2px solid ${theme.palette.secondary.main}`,
+      fontWeight: 'normal',
+    },
   },
 }));
-
-export const AppBarWrapper = styled('div')(({ isOpen, theme }) => ({}));
