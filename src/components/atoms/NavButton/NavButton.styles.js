@@ -1,6 +1,10 @@
 import { styled } from '@mui/material/styles';
 
 export const NavButtonWrapper = styled('div')(({ theme }) => ({
+  button: {
+    borderBottom: `2px solid transparent`,
+    borderTop: `2px solid transparent`,
+  },
   '& .active button': {
     fontWeight: 'bold',
   },

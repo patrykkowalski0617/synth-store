@@ -1,11 +1,12 @@
 import React from 'react';
-import productsData from '../../../data/productsData';
-import ProductCardListing from '../../molecules/ProductCardListing/ProductCardListing';
+import productsData from '../../data/productsData';
+import ProductCardListing from '../molecules/ProductCardListing/ProductCardListing';
 import { ProductsListWrapper } from './PruductsList.styles';
 
-const ProductsList = () => {
+const ProductsList = ({ listingTitle }) => {
   return (
     <ProductsListWrapper>
+      {listingTitle}
       {productsData.map(({ imgName, brand, name, price }, i) => (
         <ProductCardListing
           key={`${brand}-${name}[${i}]`}
