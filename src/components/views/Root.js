@@ -9,6 +9,7 @@ import Main from './Main';
 import DesktopSynth from './DesktopSynth';
 import KeyboardSynth from './KeyboardSynth';
 import Accessories from './Accessories';
+import ProductsProvider from '../../providers/ProductsProvider';
 
 const inputGlobalStyles = <GlobalStyles styles={globalStyles} />;
 
@@ -16,16 +17,18 @@ function Root() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {inputGlobalStyles}
-        <GlobalStyles styles={globalStyles} />
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/desktop_synths" element={<DesktopSynth />} />
-          <Route path="/keyboard_synths" element={<KeyboardSynth />} />
-          <Route path="/accesories" element={<Accessories />} />
-        </Routes>
+        <ProductsProvider>
+          <CssBaseline />
+          {inputGlobalStyles}
+          <GlobalStyles styles={globalStyles} />
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/desktop_synths" element={<DesktopSynth />} />
+            <Route path="/keyboard_synths" element={<KeyboardSynth />} />
+            <Route path="/accesories" element={<Accessories />} />
+          </Routes>
+        </ProductsProvider>
       </ThemeProvider>
     </Router>
   );

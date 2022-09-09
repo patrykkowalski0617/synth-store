@@ -7,25 +7,35 @@ import {
   ProductPrice,
   ProductName,
 } from './ProductCardListing.styles';
+import { Link } from 'react-router-dom';
 
-const ProductCardListing = ({ imgName, brand, name, price }) => {
+const ProductCardListing = ({ imgName, brand, name, price, category }) => {
   return (
     <ProductCardWrapper>
       <ProductCard>
         <img
-          src={require(`../../../assets/img/${imgName}`)}
+          src={require(`../../../assets/img/${category}/${imgName}`)}
           alt={`${brand} - ${name}`}
         />
         <ProductName>
-          <span>{brand}</span> - {name}
+          {brand.length ? (
+            <>
+              <span>{brand}</span> -
+            </>
+          ) : (
+            ''
+          )}{' '}
+          {name}
         </ProductName>
         <Typography variant="h4">
           <ProductPrice>{price}</ProductPrice>
         </Typography>
-        <Button variant="contained">
-          <ShoppingCartIcon />
-          Cart
-        </Button>
+        <Link to="/product">
+          <Button variant="contained">
+            <ShoppingCartIcon />
+            Cart
+          </Button>
+        </Link>
       </ProductCard>
     </ProductCardWrapper>
   );

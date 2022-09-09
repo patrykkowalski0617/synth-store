@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Root from './components/views/Root';
 // import reportWebVitals from './reportWebVitals';
+import { worker } from './mokcs/browser';
+
+worker.start();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
