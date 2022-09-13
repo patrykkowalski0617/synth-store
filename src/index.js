@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom/client';
 import Root from './components/views/Root';
 // import reportWebVitals from './reportWebVitals';
 import { worker } from './mokcs/browser';
+import ProductsList2 from './components/templates/ProductsList2';
 
 worker.start();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <ProductsList2 />
     <Root />
   </React.StrictMode>
 );

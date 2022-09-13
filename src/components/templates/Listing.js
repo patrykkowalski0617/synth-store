@@ -7,6 +7,7 @@ const ProductsList = ({ listingTitle }) => {
   // const category = 'desktop_synths';
   // const category = 'keyboard_synths';
   // const category = 'cables';
+
   const category = 'headphones';
   return (
     <>
