@@ -1,47 +1,56 @@
-import React from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import { useHeader } from '../../organisms/Header/HeaderContext';
 
-const Navigation: React.FC = () => {
-  return (
-    <nav style={styles.navigation}>
-      <ul style={styles.ul}>
-        <li>
-          <Link to="/" style={styles.link}>
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link to="/products/desktop-synthesizers" style={styles.link}>
-            Desktop synts
-          </Link>
-        </li>
-        <li>
-          <Link to="/products/keyboard-synthesizers " style={styles.link}>
-            Keyboard Synthesizers
-          </Link>
-        </li>
-      </ul>
-    </nav>
-  );
+type navigationItem = {
+  text: string;
+  url: string;
 };
 
-// Inline styles for demonstration
-const styles = {
-  navigation: {
-    background: '#333',
-    padding: '20px',
+const navigationList: navigationItem[] = [
+  { text: 'Home', url: '/' },
+  { text: 'Desktop synts', url: '/products/desktop-synthesizers' },
+  {
+    text: 'Keyboard Synthesizers',
+    url: '/products/keyboard-synthesizers',
   },
-  ul: {
-    listStyle: 'none',
-    display: 'flex',
-    gap: '20px',
-    margin: 0,
-    padding: 0,
-  },
-  link: {
-    color: '#fff',
-    textDecoration: 'none',
-  },
+];
+
+const Navigation: FC = () => {
+  const { header, toggleHeader } = useHeader();
+
+  const toggleDrawer = () => {
+    toggleHeader();
+  };
+
+  const DrawerList = (
+    <nav>
+      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer}>
+        <List>
+          {navigationList.map(({ text, url }, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <Link to={url}>{text}</Link>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </nav>
+  );
+
+  return (
+    <div>
+      <Drawer open={header} onClose={toggleDrawer}>
+        {DrawerList}
+      </Drawer>
+    </div>
+  );
 };
 
 export default Navigation;
