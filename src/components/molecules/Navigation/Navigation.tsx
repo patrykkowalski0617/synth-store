@@ -32,8 +32,8 @@ const Navigation: FC = () => {
     <nav>
       <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer}>
         <List>
-          {navigationList.map(({ text, url }, index) => (
-            <ListItem key={text} disablePadding>
+          {navigationList.map(({ text, url }) => (
+            <ListItem key={url}>
               <ListItemButton>
                 <Link to={url}>{text}</Link>
               </ListItemButton>
@@ -45,11 +45,9 @@ const Navigation: FC = () => {
   );
 
   return (
-    <div>
-      <Drawer open={header} onClose={toggleDrawer}>
-        {DrawerList}
-      </Drawer>
-    </div>
+    <Drawer open={header} onClose={toggleDrawer}>
+      {DrawerList}
+    </Drawer>
   );
 };
 
