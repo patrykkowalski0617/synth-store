@@ -12,12 +12,12 @@ type navigationItem = {
   url: string;
 };
 
-const navigationList: navigationItem[] = [
+export const navigationList: navigationItem[] = [
   { text: 'Home', url: '/' },
-  { text: 'Desktop synts', url: '/products/desktop-synthesizers' },
+  { text: 'Desktop synts', url: '/synthesizers/desktop-synthesizers' },
   {
     text: 'Keyboard Synthesizers',
-    url: '/products/keyboard-synthesizers',
+    url: '/synthesizers/keyboard-synthesizers',
   },
 ];
 
