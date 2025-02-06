@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../../firebaseConfig';
+import Breadcrumbs from '../../molecules/Breadcrumb/Breadcrumbs';
+import { ProductCardProps } from '../../molecules/ProductCard/ProductCard';
+import ProductList from '../../organisms/ProductList/ProductList';
 
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  brand: string;
-  imgName: string;
+export type ProductPageProps = {
+  category: string;
 };
 
-const ProductPaga: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+const ProductPage: FC<ProductPageProps> = ({ category }) => {
+  const [products, setProducts] = useState<ProductCardProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  console.log('category', category);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'desktop_synths'));
-        const productsData: Product[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Product[];
+        const querySnapshot = await getDocs(collection(db, category));
+        console.log('querySnapshot', querySnapshot);
+        const productsData: ProductCardProps[] = querySnapshot.docs.map(
+          (doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })
+        ) as ProductCardProps[];
         setProducts(productsData);
       } catch (err) {
         console.error('Error fetching products:', err);
@@ -33,14 +35,14 @@ const ProductPaga: React.FC = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [category]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <h1>Product List</h1>
+      <Breadcrumbs />
       <div
         style={{
           display: 'grid',
@@ -48,31 +50,10 @@ const ProductPaga: React.FC = () => {
           gap: '20px',
         }}
       >
-        {products.map((product) => (
-          <div
-            key={product.id}
-            style={{
-              border: '1px solid #ccc',
-              padding: '10px',
-              borderRadius: '5px',
-            }}
-          >
-            <img
-              src={
-                'https://raw.githubusercontent.com/patrykkowalski0617/synth-store-storage/refs/heads/main/img/desktop_synths/' +
-                product.imgName
-              }
-              alt={product.name}
-              style={{ width: '100%', height: '150px', objectFit: 'cover' }}
-            />
-            <h3>{product.name}</h3>
-            <p>Brand: {product.brand}</p>
-            <p>Price: ${product.price.toFixed(2)}</p>
-          </div>
-        ))}
+        <ProductList products={products} category={category} />
       </div>
     </div>
   );
 };
 
-export default ProductPaga;
+export default ProductPage;

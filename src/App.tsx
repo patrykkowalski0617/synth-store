@@ -5,7 +5,6 @@ import ProductPage from './components/pages/ProductPage/ProductPage';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/organisms/Header/Header';
 import { HeaderProvider } from './components/organisms/Header/HeaderContext';
-import { navigationList } from './components/molecules/Navigation/Navigation';
 
 const App: React.FC = () => {
   return (
@@ -18,11 +17,11 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route
               path="/synthesizers/keyboard-synthesizers"
-              element={<ProductPage />}
+              element={<ProductPage category="keyboard_synths" />}
             />
             <Route
               path="/synthesizers/desktop-synthesizers"
-              element={<ProductPage />}
+              element={<ProductPage category="desktop_synths" />}
             />
           </Routes>
         </BrowserRouter>

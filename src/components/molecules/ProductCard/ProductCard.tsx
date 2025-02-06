@@ -7,29 +7,45 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-type ProductCardProps = {
-  id: number;
+export type ProductCardProps = {
+  id: string;
   name: string;
-  description: string;
+  brand: string;
   price: number;
-  imageName: string;
-  onAddToCart: (id: number) => void;
+  imgName: string;
+  category: string;
+  onAddToCart: (id: string) => void;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({
   id,
   name,
-  description,
+  brand,
   price,
-  imageName,
+  imgName,
+  category,
   onAddToCart,
 }) => {
   return (
-    <Card sx={{ maxWidth: 345, margin: 'auto', boxShadow: 3 }}>
+    <Card
+      sx={{
+        maxWidth: 345,
+        margin: 'auto',
+        boxShadow: 3,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}
+    >
       <CardMedia
         component="img"
-        height="200"
-        image="https://raw.githubusercontent.com/patrykkowalski0617/synth-store-storage/refs/heads/main/img/cables/1010Music_3-5mm-1-4-Breakout_01_2.jpg"
+        // height="200"
+        image={
+          'https://raw.githubusercontent.com/patrykkowalski0617/synth-store-storage/refs/heads/main/img/' +
+          category +
+          '/' +
+          imgName
+        }
         alt={name}
       />
       <CardContent>
@@ -37,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {description}
+          {brand}
         </Typography>
         <Box
           sx={{
