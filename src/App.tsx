@@ -5,6 +5,7 @@ import ProductPage from './components/pages/ProductPage/ProductPage';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/organisms/Header/Header';
 import { HeaderProvider } from './components/organisms/Header/HeaderContext';
+import { Toolbar } from '@mui/material';
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
       <HeaderProvider>
         <BrowserRouter>
           <Header />
+          <Toolbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, CSSProperties } from 'react';
 import ProductCard from '../../molecules/ProductCard/ProductCard';
 import { ProductCardProps } from '../../molecules/ProductCard/ProductCard';
 
@@ -7,9 +7,15 @@ export type ProductListProps = {
   category: string;
 };
 
+const ProductListStyle: CSSProperties = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  padding: '20px',
+};
+
 const ProductList: FC<ProductListProps> = ({ products, category }) => {
   return (
-    <>
+    <div style={ProductListStyle}>
       {products.map(({ id, name, brand, price, imgName }) => (
         <ProductCard
           key={id}
@@ -24,7 +30,7 @@ const ProductList: FC<ProductListProps> = ({ products, category }) => {
           }}
         />
       ))}
-    </>
+    </div>
   );
 };
 
