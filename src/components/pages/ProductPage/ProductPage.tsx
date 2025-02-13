@@ -45,39 +45,26 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      {/* Breadcrumbs always at the top */}
       <Breadcrumbs />
 
-      {/* Layout: Filters (Top on Mobile, Left on Desktop) & Product List */}
       <Box
         sx={{
           display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
+          flexDirection: { xs: 'column', md: 'row' },
           gap: 2,
           marginTop: 2,
         }}
       >
-        {/* Filters - Top on Mobile, Left on Desktop */}
-        <Box
-          sx={{
-            width: { xs: '100%', sm: '240px' },
-            flexShrink: 0,
+        <ProductFilterSidebar
+          brands={['a', 'b']}
+          filters={{
+            brands: [],
+            priceRange: [0, 5000],
           }}
-        >
-          <ProductFilterSidebar
-            brands={['a', 'b']}
-            filters={{
-              brands: [],
-              priceRange: [0, 5000],
-            }}
-            onFilterChange={() => {}}
-          />
-        </Box>
+          onFilterChange={() => {}}
+        />
 
-        {/* Product List - Below Filters on Mobile, Right on Desktop */}
-        <Box sx={{ flexGrow: 1 }}>
-          <ProductList products={products} category={category} />
-        </Box>
+        <ProductList products={products} category={category} />
       </Box>
     </Box>
   );

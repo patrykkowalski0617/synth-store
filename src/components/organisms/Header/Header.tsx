@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Search, SearchIconWrapper, StyledInputBase } from './Header.style';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -7,18 +8,17 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Navigation from '../../molecules/Navigation/Navigation';
-import { useHeader } from './HeaderContext';
 
 export default function Header() {
-  const { toggleHeader } = useHeader();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleDrawer = () => {
-    toggleHeader();
+    setIsMenuOpen((prev) => !prev);
   };
 
   return (
     <>
-      <Navigation></Navigation>
+      <Navigation isMenuOpen={isMenuOpen} toggleDrawer={toggleDrawer} />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           position="fixed"

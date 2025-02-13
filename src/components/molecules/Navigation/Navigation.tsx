@@ -5,31 +5,28 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import { useHeader } from '../../organisms/Header/HeaderContext';
+import { Toolbar } from '@mui/material';
 
-type navigationItem = {
+type NavigationProps = {
+  isMenuOpen: boolean;
+  toggleDrawer: () => void;
+};
+
+type NavigationItem = {
   text: string;
   url: string;
 };
 
-export const navigationList: navigationItem[] = [
+export const navigationList: NavigationItem[] = [
   { text: 'Home', url: '/' },
-  { text: 'Desktop synts', url: '/synthesizers/desktop-synthesizers' },
-  {
-    text: 'Keyboard Synthesizers',
-    url: '/synthesizers/keyboard-synthesizers',
-  },
+  { text: 'Desktop Synths', url: '/synthesizers/desktop-synthesizers' },
+  { text: 'Keyboard Synthesizers', url: '/synthesizers/keyboard-synthesizers' },
 ];
 
-const Navigation: FC = () => {
-  const { header, toggleHeader } = useHeader();
-
-  const toggleDrawer = () => {
-    toggleHeader();
-  };
-
+const Navigation: FC<NavigationProps> = ({ isMenuOpen, toggleDrawer }) => {
   const DrawerList = (
     <nav>
+      <Toolbar />
       <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer}>
         <List>
           {navigationList.map(({ text, url }) => (
@@ -45,7 +42,7 @@ const Navigation: FC = () => {
   );
 
   return (
-    <Drawer open={header} onClose={toggleDrawer}>
+    <Drawer open={isMenuOpen} onClose={toggleDrawer}>
       {DrawerList}
     </Drawer>
   );
