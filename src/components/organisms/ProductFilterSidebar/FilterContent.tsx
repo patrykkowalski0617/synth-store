@@ -14,26 +14,15 @@ import {
   applyButtonStyles,
 } from './ProductFilterSidebar.style';
 
-export type FilterOptions = {
-  brands: string[];
-  priceRange: number[];
-};
+import { ProductFilterSidebarProps } from './ProductFilterSidebar';
 
-type FilterContentProps = {
-  brands: string[];
-  filters: FilterOptions;
-  onFilterChange: (newFilters: FilterOptions) => void;
-};
-
-const FilterContent: FC<FilterContentProps> = ({
-  brands,
+const FilterContent: FC<ProductFilterSidebarProps> = ({
   filters,
   onFilterChange,
 }) => {
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(
-    filters.brands
-  );
-  const [priceRange, setPriceRange] = useState<number[]>(filters.priceRange);
+  const { brands, priceRange } = filters;
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(brands);
+  const [selectedPriceRange, setPriceRange] = useState<number[]>(priceRange);
 
   const handleBrandChange = (brand: string) => {
     const updatedBrands = selectedBrands.includes(brand)
@@ -41,19 +30,17 @@ const FilterContent: FC<FilterContentProps> = ({
       : [...selectedBrands, brand];
 
     setSelectedBrands(updatedBrands);
-    onFilterChange({ brands: updatedBrands, priceRange });
+    onFilterChange({ brands: updatedBrands, priceRange: selectedPriceRange });
   };
 
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
-    onFilterChange({
-      brands: selectedBrands,
-      priceRange: newValue as number[],
-    });
+
+    onFilterChange({ brands: selectedBrands, priceRange: selectedPriceRange });
   };
 
   const applyFilters = () => {
-    onFilterChange({ brands: selectedBrands, priceRange });
+    onFilterChange({ brands: selectedBrands, priceRange: selectedPriceRange });
   };
 
   return (
@@ -66,11 +53,11 @@ const FilterContent: FC<FilterContentProps> = ({
       <Typography variant="subtitle1">Price Range</Typography>
       <div style={sliderContainerStyles}>
         <Slider
-          value={priceRange}
+          value={selectedPriceRange}
           onChange={handlePriceChange}
           valueLabelDisplay="auto"
-          min={0}
-          max={5000}
+          min={priceRange[0]}
+          max={priceRange[1]}
           step={100}
         />
       </div>
@@ -84,7 +71,7 @@ const FilterContent: FC<FilterContentProps> = ({
           <FormControlLabel
             control={
               <Checkbox
-                checked={selectedBrands.includes(brand)}
+                checked={brands.includes(brand)}
                 onChange={() => handleBrandChange(brand)}
               />
             }

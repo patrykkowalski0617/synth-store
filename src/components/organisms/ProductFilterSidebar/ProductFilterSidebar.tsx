@@ -15,14 +15,12 @@ export type FilterOptions = {
   priceRange: number[];
 };
 
-type ProductFilterSidebarProps = {
-  brands: string[];
+export type ProductFilterSidebarProps = {
   filters: FilterOptions;
   onFilterChange: (newFilters: FilterOptions) => void;
 };
 
 const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
-  brands,
   filters,
   onFilterChange,
 }) => {
@@ -68,20 +66,12 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
         >
           <CloseIcon />
         </IconButton>
-        <FilterContent
-          brands={brands}
-          filters={filters}
-          onFilterChange={onFilterChange}
-        />
+        <FilterContent filters={filters} onFilterChange={onFilterChange} />
       </Drawer>
 
       {/* Desktop Drawer */}
       <Drawer variant="permanent" sx={desktopDrawerStyles} open>
-        <FilterContent
-          brands={brands}
-          filters={filters}
-          onFilterChange={onFilterChange}
-        />
+        <FilterContent filters={filters} onFilterChange={onFilterChange} />
       </Drawer>
     </Box>
   );
