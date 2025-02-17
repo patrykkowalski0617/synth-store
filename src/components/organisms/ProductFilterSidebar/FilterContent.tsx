@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   List,
   ListItem,
@@ -24,19 +24,25 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
   const [selectedBrands, setSelectedBrands] = useState<string[]>(brands);
   const [selectedPriceRange, setPriceRange] = useState<number[]>(priceRange);
 
+  useEffect(() => {
+    setSelectedBrands(brands);
+    setPriceRange(priceRange);
+  }, [brands, priceRange]);
+
   const handleBrandChange = (brand: string) => {
     const updatedBrands = selectedBrands.includes(brand)
       ? selectedBrands.filter((b) => b !== brand)
       : [...selectedBrands, brand];
 
     setSelectedBrands(updatedBrands);
-    onFilterChange({ brands: updatedBrands, priceRange: selectedPriceRange });
   };
 
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
-    setPriceRange(newValue as number[]);
+    setPriceRange(() => {
+      const updatedPriceRange = newValue as number[];
 
-    onFilterChange({ brands: selectedBrands, priceRange: selectedPriceRange });
+      return updatedPriceRange;
+    });
   };
 
   const applyFilters = () => {
@@ -71,7 +77,7 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
           <FormControlLabel
             control={
               <Checkbox
-                checked={brands.includes(brand)}
+                checked={selectedBrands.includes(brand)}
                 onChange={() => handleBrandChange(brand)}
               />
             }

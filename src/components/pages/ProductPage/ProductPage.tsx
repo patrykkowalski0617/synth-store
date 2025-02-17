@@ -13,6 +13,9 @@ export type ProductPageProps = {
 
 const ProductPage: FC<ProductPageProps> = ({ category }) => {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductCardProps[]>(
+    []
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [brands, setBrands] = useState<string[]>([]);
@@ -31,7 +34,7 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
 
         const uniqueBrands = Array.from(
           new Set(productsData.map((product) => product.brand))
-        );
+        ).sort();
         setBrands(uniqueBrands);
 
         const prices = productsData.map((product) => product.price);
@@ -49,6 +52,20 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
     };
     fetchProducts();
   }, [category]);
+
+  const handleFilterChange = (newFilters: {
+    brands: string[];
+    priceRange: number[];
+  }) => {
+    const filtered = products.filter(
+      (product) =>
+        newFilters.brands.includes(product.brand) &&
+        product.price >= newFilters.priceRange[0] &&
+        product.price <= newFilters.priceRange[1]
+    );
+
+    setFilteredProducts(filtered);
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -70,10 +87,12 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
             brands,
             priceRange,
           }}
-          onFilterChange={() => {}}
+          onFilterChange={handleFilterChange}
         />
-
-        <ProductList products={products} category={category} />
+        <ProductList
+          products={filteredProducts.length ? filteredProducts : products}
+          category={category}
+        />
       </Box>
     </Box>
   );
