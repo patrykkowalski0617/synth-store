@@ -5,10 +5,12 @@ import ProductPage from './components/pages/ProductPage/ProductPage';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/organisms/Header/Header';
 import { Toolbar } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './theme';
 
 const App: React.FC = () => {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
         <Header />
@@ -25,7 +27,7 @@ const App: React.FC = () => {
           />
         </Routes>
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   );
 };
 
