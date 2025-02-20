@@ -15,19 +15,25 @@ import {
 } from './ProductFilterSidebar.style';
 
 import { ProductFilterSidebarProps } from './ProductFilterSidebar';
+import BrandListItem from './BrandListItem/BrandListItem';
 
 const FilterContent: FC<ProductFilterSidebarProps> = ({
-  filters,
+  filterAvailableOptions,
   onFilterChange,
 }) => {
-  const { brands, priceRange } = filters;
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(brands);
-  const [selectedPriceRange, setPriceRange] = useState<number[]>(priceRange);
+  const { brands, priceRange } = filterAvailableOptions;
 
-  useEffect(() => {
-    setSelectedBrands(brands);
-    setPriceRange(priceRange);
-  }, [brands, priceRange]);
+  const [selectedPriceRange, setSelectedPriceRange] =
+    useState<number[]>(priceRange);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+
+  const handlePriceChange = (_: Event, newValue: number | number[]) => {
+    setSelectedPriceRange(() => {
+      const updatedPriceRange = newValue as number[];
+
+      return updatedPriceRange;
+    });
+  };
 
   const handleBrandChange = (brand: string) => {
     const updatedBrands = selectedBrands.includes(brand)
@@ -35,18 +41,6 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
       : [...selectedBrands, brand];
 
     setSelectedBrands(updatedBrands);
-  };
-
-  const handlePriceChange = (_: Event, newValue: number | number[]) => {
-    setPriceRange(() => {
-      const updatedPriceRange = newValue as number[];
-
-      return updatedPriceRange;
-    });
-  };
-
-  const applyFilters = () => {
-    onFilterChange({ brands: selectedBrands, priceRange: selectedPriceRange });
   };
 
   return (
@@ -72,26 +66,21 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
       <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
         Brand
       </Typography>
-      {brands.map((brand) => (
-        <ListItem key={brand} disablePadding>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={selectedBrands.includes(brand)}
-                onChange={() => handleBrandChange(brand)}
-              />
-            }
-            label={brand}
-          />
-        </ListItem>
+      {brands.map(({ brand, count }) => (
+        <BrandListItem
+          key={brand}
+          brand={brand}
+          count={count}
+          checked={selectedBrands.includes(brand)}
+          onChange={handleBrandChange}
+        />
       ))}
 
-      {/* Apply Filters Button */}
       <Button
         variant="contained"
         color="primary"
         sx={applyButtonStyles}
-        onClick={applyFilters}
+        onClick={() => {}}
       >
         Apply Filters
       </Button>

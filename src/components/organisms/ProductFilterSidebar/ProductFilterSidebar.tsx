@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Drawer, Box, IconButton, Toolbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import FilterBtnForMobile from '../../molecules/FilterBtnForMobile/FilterBtnForMobile';
+import FilterBtnForMobile from './FilterBtnForMobile/FilterBtnForMobile';
 import FilterContent from './FilterContent';
 import {
   drawerStyles,
@@ -10,18 +10,23 @@ import {
   closeIconStyles,
 } from './ProductFilterSidebar.style';
 
+type brand = {
+  brand: string;
+  count: number;
+};
+
 export type FilterOptions = {
-  brands: string[];
+  brands: brand[];
   priceRange: number[];
 };
 
 export type ProductFilterSidebarProps = {
-  filters: FilterOptions;
+  filterAvailableOptions: FilterOptions;
   onFilterChange: (newFilters: FilterOptions) => void;
 };
 
 const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
-  filters,
+  filterAvailableOptions,
   onFilterChange,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -66,12 +71,18 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
         >
           <CloseIcon />
         </IconButton>
-        <FilterContent filters={filters} onFilterChange={onFilterChange} />
+        <FilterContent
+          filterAvailableOptions={filterAvailableOptions}
+          onFilterChange={onFilterChange}
+        />
       </Drawer>
 
       {/* Desktop Drawer */}
       <Drawer variant="permanent" sx={desktopDrawerStyles} open>
-        <FilterContent filters={filters} onFilterChange={onFilterChange} />
+        <FilterContent
+          filterAvailableOptions={filterAvailableOptions}
+          onFilterChange={onFilterChange}
+        />
       </Drawer>
     </Box>
   );
