@@ -10,7 +10,7 @@ import {
   closeIconStyles,
 } from './ProductFilterSidebar.style';
 
-type brand = {
+export type brand = {
   brand: string;
   count: number;
 };
@@ -21,12 +21,12 @@ export type FilterOptions = {
 };
 
 export type ProductFilterSidebarProps = {
-  filterAvailableOptions: FilterOptions;
+  filterAllOptions: FilterOptions;
   onFilterChange: (newFilters: FilterOptions) => void;
 };
 
 const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
-  filterAvailableOptions,
+  filterAllOptions,
   onFilterChange,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -72,7 +72,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
           <CloseIcon />
         </IconButton>
         <FilterContent
-          filterAvailableOptions={filterAvailableOptions}
+          filterAllOptions={filterAllOptions}
           onFilterChange={onFilterChange}
         />
       </Drawer>
@@ -80,7 +80,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
       {/* Desktop Drawer */}
       <Drawer variant="permanent" sx={desktopDrawerStyles} open>
         <FilterContent
-          filterAvailableOptions={filterAvailableOptions}
+          filterAllOptions={filterAllOptions}
           onFilterChange={onFilterChange}
         />
       </Drawer>

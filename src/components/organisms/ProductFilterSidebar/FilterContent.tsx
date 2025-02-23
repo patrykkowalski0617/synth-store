@@ -1,31 +1,27 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  List,
-  ListItem,
-  Checkbox,
-  FormControlLabel,
-  Slider,
-  Typography,
-  Button,
-} from '@mui/material';
+import { List, Slider, Typography, Button } from '@mui/material';
 import {
   filterContainerStyles,
   sliderContainerStyles,
   applyButtonStyles,
 } from './ProductFilterSidebar.style';
-
-import { ProductFilterSidebarProps } from './ProductFilterSidebar';
+import { ProductFilterSidebarProps, brand } from './ProductFilterSidebar';
 import BrandListItem from './BrandListItem/BrandListItem';
 
 const FilterContent: FC<ProductFilterSidebarProps> = ({
-  filterAvailableOptions,
+  filterAllOptions,
   onFilterChange,
 }) => {
-  const { brands, priceRange } = filterAvailableOptions;
+  const { brands, priceRange } = filterAllOptions;
 
   const [selectedPriceRange, setSelectedPriceRange] =
     useState<number[]>(priceRange);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<brand[]>([]);
+
+  useEffect(() => {
+    setSelectedBrands([]);
+    setSelectedPriceRange(selectedPriceRange);
+  }, [filterAllOptions]);
 
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
     setSelectedPriceRange(() => {
@@ -35,12 +31,18 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
     });
   };
 
-  const handleBrandChange = (brand: string) => {
-    const updatedBrands = selectedBrands.includes(brand)
-      ? selectedBrands.filter((b) => b !== brand)
-      : [...selectedBrands, brand];
-
+  const handleBrandChange = (brandItem: brand) => {
+    const isSelected = selectedBrands.some(
+      (el) => el.brand === brandItem.brand
+    );
+    const updatedBrands = isSelected
+      ? selectedBrands.filter((el) => el.brand !== brandItem.brand)
+      : [...selectedBrands, brandItem];
     setSelectedBrands(updatedBrands);
+  };
+
+  const applyFilters = () => {
+    onFilterChange({ brands: selectedBrands, priceRange: selectedPriceRange });
   };
 
   return (
@@ -71,7 +73,7 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
           key={brand}
           brand={brand}
           count={count}
-          checked={selectedBrands.includes(brand)}
+          checked={selectedBrands.some((e) => e.brand === brand)}
           onChange={handleBrandChange}
         />
       ))}
@@ -80,7 +82,7 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
         variant="contained"
         color="primary"
         sx={applyButtonStyles}
-        onClick={() => {}}
+        onClick={applyFilters}
       >
         Apply Filters
       </Button>

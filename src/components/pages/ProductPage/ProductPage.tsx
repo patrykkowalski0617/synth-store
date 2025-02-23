@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, count, getDocs } from 'firebase/firestore';
 import { db } from '../../../../firebaseConfig';
 import Breadcrumbs from '../../molecules/Breadcrumb/Breadcrumbs';
 import ProductFilterSidebar, {
@@ -15,9 +15,11 @@ export type ProductPageProps = {
 
 const ProductPage: FC<ProductPageProps> = ({ category }) => {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
+  const [filteredProducts, setFilteredProducts] =
+    useState<ProductCardProps[]>(products);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [filterAvailableOptions, setFitlterAvailableOption] =
+  const [filterAllOptions, setFitlterAllOptions] =
     useState<FilterOptions | null>(null);
 
   useEffect(() => {
@@ -34,15 +36,14 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
             return acc;
           }, new Map<string, number>())
         )
-          .map(([brand, count]) => ({ brand, count })) // Convert to array of objects
-          .sort((a, b) => a.brand.localeCompare(b.brand)); // Sort alphabetically
-
-        console.log(uniqueBrands);
+          .map(([brand, count]) => ({ brand, count, isSelected: false }))
+          .sort((a, b) => a.brand.localeCompare(b.brand));
 
         const prices = productsData.map((product) => product.price);
         const minPrice = Math.min(...prices);
         const maxPrice = Math.max(...prices);
-        setFitlterAvailableOption({
+
+        setFitlterAllOptions({
           brands: uniqueBrands,
           priceRange: [minPrice, maxPrice],
         });
@@ -58,6 +59,23 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
     fetchProducts();
   }, [category]);
 
+  const handleFilterChange = (appliedFilters: FilterOptions) => {
+    const filteredProducts: ProductCardProps[] = products.filter((product) => {
+      const isInPriceRange =
+        product.price >= appliedFilters.priceRange[0] &&
+        product.price <= appliedFilters.priceRange[1];
+
+      const isInSelectedBrands = appliedFilters.brands.length
+        ? appliedFilters.brands.some((brand) => brand.brand === product.brand)
+        : true;
+      return isInPriceRange && isInSelectedBrands;
+    });
+
+    if (!filteredProducts.length) {
+      alert('No products for this filters. Change filters :)');
+    }
+    setFilteredProducts(filteredProducts);
+  };
   return (
     <Box sx={{ padding: 2 }}>
       <Breadcrumbs />
@@ -69,15 +87,18 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
           mt: 2,
         }}
       >
-        {filterAvailableOptions ? (
+        {filterAllOptions ? (
           <ProductFilterSidebar
-            filterAvailableOptions={filterAvailableOptions}
-            onFilterChange={() => {}}
+            filterAllOptions={filterAllOptions}
+            onFilterChange={handleFilterChange}
           />
         ) : (
           <p>Loading filters...</p>
         )}
-        <ProductList products={products} category={category} />
+        <ProductList
+          products={filteredProducts.length ? filteredProducts : products}
+          category={category}
+        />
       </Box>
     </Box>
   );

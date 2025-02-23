@@ -1,11 +1,12 @@
 import { FC } from 'react';
 import { ListItem, FormControlLabel, Checkbox } from '@mui/material';
+import { brand } from '../ProductFilterSidebar';
 
 type BrandListItemProps = {
   brand: string;
   count: number;
   checked: boolean;
-  onChange: (brand: string) => void;
+  onChange: (brand: brand) => void;
 };
 
 const BrandListItem: FC<BrandListItemProps> = ({
@@ -18,7 +19,11 @@ const BrandListItem: FC<BrandListItemProps> = ({
     <ListItem key={brand} disablePadding>
       <FormControlLabel
         control={
-          <Checkbox checked={checked} onChange={() => onChange(brand)} />
+          <Checkbox
+            checked={checked}
+            onChange={() => onChange({ brand, count })}
+            disabled={!count}
+          />
         }
         label={`${brand} (${count})`}
       />
