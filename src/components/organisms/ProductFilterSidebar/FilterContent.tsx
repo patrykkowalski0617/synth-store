@@ -5,45 +5,33 @@ import {
   sliderContainerStyles,
   applyButtonStyles,
 } from './ProductFilterSidebar.style';
-import { ProductFilterSidebarProps, brand } from './ProductFilterSidebar';
-import BrandListItem from './BrandListItem/BrandListItem';
+import { ProductFilterSidebarProps } from './ProductFilterSidebar';
+import { ListItem, FormControlLabel, Checkbox } from '@mui/material';
 
 const FilterContent: FC<ProductFilterSidebarProps> = ({
-  filterAllOptions,
-  onFilterChange,
+  filterOptions,
+  applyFilters,
 }) => {
-  const { brands, priceRange } = filterAllOptions;
-
+  const { brands, priceRange } = filterOptions;
   const [selectedPriceRange, setSelectedPriceRange] =
     useState<number[]>(priceRange);
-  const [selectedBrands, setSelectedBrands] = useState<brand[]>([]);
-
-  useEffect(() => {
-    setSelectedBrands([]);
-    setSelectedPriceRange(selectedPriceRange);
-  }, [filterAllOptions]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
 
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
-    setSelectedPriceRange(() => {
-      const updatedPriceRange = newValue as number[];
-
-      return updatedPriceRange;
-    });
+    setSelectedPriceRange(newValue as number[]);
   };
 
-  const handleBrandChange = (brandItem: brand) => {
-    const isSelected = selectedBrands.some(
-      (el) => el.brand === brandItem.brand
-    );
-    const updatedBrands = isSelected
-      ? selectedBrands.filter((el) => el.brand !== brandItem.brand)
-      : [...selectedBrands, brandItem];
-    setSelectedBrands(updatedBrands);
+  const handleBrandChange = (name: string) => {
+    if (selectedBrands.includes(name)) {
+      setSelectedBrands(selectedBrands.filter((el) => el !== name));
+    } else {
+      setSelectedBrands(Array.from(new Set([...selectedBrands, name])));
+    }
   };
 
-  const applyFilters = () => {
-    onFilterChange({ brands: selectedBrands, priceRange: selectedPriceRange });
-  };
+  useEffect(() => {
+    console.log('filterOptions', filterOptions);
+  }, []);
 
   return (
     <List sx={filterContainerStyles}>
@@ -60,7 +48,7 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
           valueLabelDisplay="auto"
           min={priceRange[0]}
           max={priceRange[1]}
-          step={100}
+          step={50}
         />
       </div>
 
@@ -68,21 +56,36 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
       <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
         Brand
       </Typography>
-      {brands.map(({ brand, count }) => (
-        <BrandListItem
-          key={brand}
-          brand={brand}
-          count={count}
-          checked={selectedBrands.some((e) => e.brand === brand)}
-          onChange={handleBrandChange}
-        />
-      ))}
+      {brands
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort((a, b) => b.count - a.count)
+        .map(({ name, count }) => (
+          <ListItem key={name} disablePadding>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={selectedBrands.includes(name)}
+                  onChange={() => {
+                    handleBrandChange(name);
+                  }}
+                  disabled={!count}
+                />
+              }
+              label={`${name} (${count})`}
+            />
+          </ListItem>
+        ))}
 
       <Button
         variant="contained"
         color="primary"
         sx={applyButtonStyles}
-        onClick={applyFilters}
+        onClick={() => {
+          applyFilters({
+            selectedBrans: selectedBrands,
+            selectedPriceRange: selectedPriceRange,
+          });
+        }}
       >
         Apply Filters
       </Button>

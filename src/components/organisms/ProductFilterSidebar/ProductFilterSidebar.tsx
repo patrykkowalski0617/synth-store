@@ -11,7 +11,7 @@ import {
 } from './ProductFilterSidebar.style';
 
 export type brand = {
-  brand: string;
+  name: string;
   count: number;
 };
 
@@ -20,14 +20,19 @@ export type FilterOptions = {
   priceRange: number[];
 };
 
+export type filterSelectedOptions = {
+  selectedBrans: string[];
+  selectedPriceRange: number[];
+};
+
 export type ProductFilterSidebarProps = {
-  filterAllOptions: FilterOptions;
-  onFilterChange: (newFilters: FilterOptions) => void;
+  filterOptions: FilterOptions;
+  applyFilters: (filterSelectedOptions: filterSelectedOptions) => void;
 };
 
 const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
-  filterAllOptions,
-  onFilterChange,
+  filterOptions,
+  applyFilters,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -72,16 +77,16 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
           <CloseIcon />
         </IconButton>
         <FilterContent
-          filterAllOptions={filterAllOptions}
-          onFilterChange={onFilterChange}
+          filterOptions={filterOptions}
+          applyFilters={applyFilters}
         />
       </Drawer>
 
       {/* Desktop Drawer */}
       <Drawer variant="permanent" sx={desktopDrawerStyles} open>
         <FilterContent
-          filterAllOptions={filterAllOptions}
-          onFilterChange={onFilterChange}
+          filterOptions={filterOptions}
+          applyFilters={applyFilters}
         />
       </Drawer>
     </Box>

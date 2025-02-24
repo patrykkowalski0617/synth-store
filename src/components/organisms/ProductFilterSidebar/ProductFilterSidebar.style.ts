@@ -24,6 +24,7 @@ export const desktopDrawerStyles: SxProps<Theme> = {
     boxSizing: 'border-box',
     width: drawerWidth,
     position: 'relative',
+    overflow: 'hidden',
   },
 };
 

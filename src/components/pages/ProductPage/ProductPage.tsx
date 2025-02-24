@@ -1,9 +1,10 @@
 import { Box } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import { collection, count, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../../firebaseConfig';
 import Breadcrumbs from '../../molecules/Breadcrumb/Breadcrumbs';
 import ProductFilterSidebar, {
+  filterSelectedOptions,
   FilterOptions,
 } from '../../organisms/ProductFilterSidebar/ProductFilterSidebar';
 import ProductList from '../../organisms/ProductList/ProductList';
@@ -19,10 +20,15 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
     useState<ProductCardProps[]>(products);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [filterAllOptions, setFitlterAllOptions] =
-    useState<FilterOptions | null>(null);
+  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(
+    null
+  );
 
   useEffect(() => {
+    setFilterOptions(null);
+    setFilteredProducts([]);
+    setProducts([]);
+    setLoading(true);
     const fetchProducts = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, category));
@@ -30,25 +36,24 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
           id: doc.id,
           ...doc.data(),
         })) as ProductCardProps[];
+
         const uniqueBrands = Array.from(
           productsData.reduce((acc, product) => {
             acc.set(product.brand, (acc.get(product.brand) || 0) + 1);
             return acc;
           }, new Map<string, number>())
-        )
-          .map(([brand, count]) => ({ brand, count, isSelected: false }))
-          .sort((a, b) => a.brand.localeCompare(b.brand));
-
+        ).map(([brand, count]) => ({ name: brand, count }));
         const prices = productsData.map((product) => product.price);
         const minPrice = Math.min(...prices);
         const maxPrice = Math.max(...prices);
 
-        setFitlterAllOptions({
+        setFilterOptions({
           brands: uniqueBrands,
           priceRange: [minPrice, maxPrice],
         });
 
         setProducts(productsData);
+        setFilteredProducts(productsData);
       } catch (err) {
         console.error('Error fetching products:', err);
         setError('Failed to load products.');
@@ -59,23 +64,38 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
     fetchProducts();
   }, [category]);
 
-  const handleFilterChange = (appliedFilters: FilterOptions) => {
+  const handleApplyFilters = (filterSelectedOptions: filterSelectedOptions) => {
     const filteredProducts: ProductCardProps[] = products.filter((product) => {
       const isInPriceRange =
-        product.price >= appliedFilters.priceRange[0] &&
-        product.price <= appliedFilters.priceRange[1];
+        product.price >= filterSelectedOptions.selectedPriceRange[0] &&
+        product.price <= filterSelectedOptions.selectedPriceRange[1];
 
-      const isInSelectedBrands = appliedFilters.brands.length
-        ? appliedFilters.brands.some((brand) => brand.brand === product.brand)
+      const isInSelectedBrands = filterSelectedOptions.selectedBrans.length
+        ? filterSelectedOptions.selectedBrans.includes(product.brand)
         : true;
       return isInPriceRange && isInSelectedBrands;
     });
 
     if (!filteredProducts.length) {
       alert('No products for this filters. Change filters :)');
+      return;
     }
     setFilteredProducts(filteredProducts);
+    const brandsWithCountRecalculate =
+      filterOptions?.brands.map((brand) => {
+        const count = filteredProducts.filter(
+          (product) => product.brand === brand.name
+        ).length;
+        return { ...brand, count };
+      }) ?? [];
+
+    setFilterOptions((prevState) => ({
+      ...prevState,
+      brands: brandsWithCountRecalculate,
+      priceRange: prevState?.priceRange ?? [],
+    }));
   };
+
   return (
     <Box sx={{ padding: 2 }}>
       <Breadcrumbs />
@@ -87,18 +107,15 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
           mt: 2,
         }}
       >
-        {filterAllOptions ? (
+        {filterOptions ? (
           <ProductFilterSidebar
-            filterAllOptions={filterAllOptions}
-            onFilterChange={handleFilterChange}
+            filterOptions={filterOptions}
+            applyFilters={handleApplyFilters}
           />
         ) : (
           <p>Loading filters...</p>
         )}
-        <ProductList
-          products={filteredProducts.length ? filteredProducts : products}
-          category={category}
-        />
+        <ProductList products={filteredProducts} category={category} />
       </Box>
     </Box>
   );
