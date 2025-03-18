@@ -5,8 +5,9 @@ import {
   sliderContainerStyles,
   applyButtonStyles,
 } from './ProductFilterSidebar.style';
-import { ProductFilterSidebarProps } from './ProductFilterSidebar';
+import { brand, ProductFilterSidebarProps } from './ProductFilterSidebar';
 import { ListItem, FormControlLabel, Checkbox } from '@mui/material';
+import NowShoppingBy from './NowShoppingBy/NowShoppingBy';
 
 const FilterContent: FC<ProductFilterSidebarProps> = ({
   filterOptions,
@@ -16,6 +17,8 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
   const [selectedPriceRange, setSelectedPriceRange] =
     useState<number[]>(priceRange);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [sortedBrands, setSortedBrands] = useState<brand[]>([]);
+  const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
 
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
     setSelectedPriceRange(newValue as number[]);
@@ -30,15 +33,58 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
   };
 
   useEffect(() => {
-    console.log('filterOptions', filterOptions);
-  }, []);
+    const sortedBrands = [...brands].sort((a, b) => {
+      const isASelected = selectedBrands.includes(a.name) ? -1 : 1;
+      const isBSelected = selectedBrands.includes(b.name) ? -1 : 1;
+
+      if (isASelected !== isBSelected) {
+        return isASelected - isBSelected; // Checked brands first
+      }
+
+      if (b.count !== a.count) {
+        return b.count - a.count; // Higher count first
+      }
+
+      return a.name.localeCompare(b.name); // Alphabetical as last criteria
+    });
+    setSortedBrands(sortedBrands);
+  }, [brands]);
+
+  const handleApplyFilters = () => {
+    applyFilters({
+      selectedBrans: selectedBrands,
+      selectedPriceRange: selectedPriceRange,
+    });
+
+    const appliedFilters = [];
+
+    const priceRangeFilter =
+      selectedPriceRange[0] !== priceRange[0] ||
+      selectedPriceRange[1] !== priceRange[1]
+        ? `Price range: $${selectedPriceRange[0]} - $${selectedPriceRange[1]}`
+        : null;
+
+    if (priceRangeFilter) {
+      appliedFilters.push(priceRangeFilter);
+    }
+    if (selectedBrands.length) {
+      selectedBrands.forEach((brand) => {
+        appliedFilters.push(`Brand: ${brand}`);
+      });
+    }
+    setAppliedFilters(appliedFilters);
+  };
 
   return (
     <List sx={filterContainerStyles}>
       <Typography variant="h6" gutterBottom>
         Filters
       </Typography>
-
+      <NowShoppingBy
+        appliedFilters={appliedFilters}
+        onRemoveFilter={() => {}}
+        onClearAll={() => {}}
+      />
       {/* Price Range Filter */}
       <Typography variant="subtitle1">Price Range</Typography>
       <div style={sliderContainerStyles}>
@@ -56,36 +102,28 @@ const FilterContent: FC<ProductFilterSidebarProps> = ({
       <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
         Brand
       </Typography>
-      {brands
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .sort((a, b) => b.count - a.count)
-        .map(({ name, count }) => (
-          <ListItem key={name} disablePadding>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={selectedBrands.includes(name)}
-                  onChange={() => {
-                    handleBrandChange(name);
-                  }}
-                  disabled={!count}
-                />
-              }
-              label={`${name} (${count})`}
-            />
-          </ListItem>
-        ))}
+      {sortedBrands.map(({ name, count }) => (
+        <ListItem key={name} disablePadding>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={selectedBrands.includes(name)}
+                onChange={() => {
+                  handleBrandChange(name);
+                }}
+                disabled={!count}
+              />
+            }
+            label={`${name} (${count})`}
+          />
+        </ListItem>
+      ))}
 
       <Button
         variant="contained"
         color="primary"
         sx={applyButtonStyles}
-        onClick={() => {
-          applyFilters({
-            selectedBrans: selectedBrands,
-            selectedPriceRange: selectedPriceRange,
-          });
-        }}
+        onClick={handleApplyFilters}
       >
         Apply Filters
       </Button>

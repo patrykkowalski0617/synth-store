@@ -11,6 +11,8 @@ const ProductListStyle: CSSProperties = {
   display: 'flex',
   flexWrap: 'wrap',
   padding: '20px',
+  width: '100%',
+  height: 'fit-content',
 };
 
 const ProductList: FC<ProductListProps> = ({ products, category }) => {

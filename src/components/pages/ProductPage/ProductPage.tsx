@@ -32,17 +32,17 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
     const fetchProducts = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, category));
-        const productsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as ProductCardProps[];
+        const productsData = querySnapshot.docs.map((doc) =>
+          doc.data()
+        ) as ProductCardProps[];
 
-        const uniqueBrands = Array.from(
-          productsData.reduce((acc, product) => {
-            acc.set(product.brand, (acc.get(product.brand) || 0) + 1);
+        const uniqueBrands = Object.entries(
+          productsData.reduce((acc: Record<string, number>, product) => {
+            acc[product.brand] = (acc[product.brand] || 0) + 1;
             return acc;
-          }, new Map<string, number>())
+          }, {})
         ).map(([brand, count]) => ({ name: brand, count }));
+
         const prices = productsData.map((product) => product.price);
         const minPrice = Math.min(...prices);
         const maxPrice = Math.max(...prices);
@@ -83,9 +83,13 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
     setFilteredProducts(filteredProducts);
     const brandsWithCountRecalculate =
       filterOptions?.brands.map((brand) => {
-        const count = filteredProducts.filter(
-          (product) => product.brand === brand.name
+        const count = products.filter(
+          (product) =>
+            product.price >= filterSelectedOptions.selectedPriceRange[0] &&
+            product.price <= filterSelectedOptions.selectedPriceRange[1] &&
+            product.brand === brand.name
         ).length;
+
         return { ...brand, count };
       }) ?? [];
 
@@ -115,7 +119,12 @@ const ProductPage: FC<ProductPageProps> = ({ category }) => {
         ) : (
           <p>Loading filters...</p>
         )}
-        <ProductList products={filteredProducts} category={category} />
+        {!loading ? (
+          <ProductList products={filteredProducts} category={category} />
+        ) : (
+          <p>Loading products...</p>
+        )}
+        {error && <p>An error occurred</p>}
       </Box>
     </Box>
   );
